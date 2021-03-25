@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "79865365405",
+    "project_id": "wiil-food-app",
+    "storage_bucket": "wiil-food-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79865365405:android:8ecccc8eb69b8dff076574",
+        "android_client_info": {
+          "package_name": "com.example.wiil_food_and_restaurant_listing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79865365405-24kdk46b4thlrdcv9h8m0g3dau3jfrna.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wiil_food_and_restaurant_listing",
+            "certificate_hash": "3095f8badbcc6da62a2d6ed323bb701c95575cf4"
+          }
+        },
+        {
+          "client_id": "79865365405-904u3n42g4kd40n20kr3e6a38beokhs8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVFGtTklYmh7WKnPN74C1cAgd_JPZtcV8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "79865365405-904u3n42g4kd40n20kr3e6a38beokhs8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

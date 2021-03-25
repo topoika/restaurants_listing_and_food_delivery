@@ -1,0 +1,47 @@
+name: wiil_food_and_restaurant_listing
+description: A new Flutter project.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cloud_firestore: ^1.0.1
+  cupertino_icons: ^1.0.2
+  firebase_auth: ^1.0.1
+  firebase_core: ^1.0.1
+  geolocator: ^7.0.1
+  google_maps_flutter: ^2.0.1
+  google_sign_in: ^5.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/dishes/
+    - assets/icons/
+
+  fonts:
+    - family: ArchivoNarrow
+      fonts:
+        - asset: assets/fonts/ArchivoNarrow-Bold.ttf
+        - asset: assets/fonts/ArchivoNarrow-BoldItalic.ttf
+        - asset: assets/fonts/ArchivoNarrow-Italic.ttf
+        - asset: assets/fonts/ArchivoNarrow-Medium.ttf
+        - asset: assets/fonts/ArchivoNarrow-MediumItalic.ttf
+        - asset: assets/fonts/ArchivoNarrow-Regular.ttf
+        - asset: assets/fonts/ArchivoNarrow-SemiBold.ttf
+        - asset: assets/fonts/ArchivoNarrow-SemiBoldItalic.ttf
