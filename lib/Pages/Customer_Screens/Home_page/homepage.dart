@@ -4,12 +4,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:wiil_food_and_restaurant_listing/Maps_Nav/mainPage.dart';
 import 'package:wiil_food_and_restaurant_listing/Models/categories_model.dart';
 import 'package:wiil_food_and_restaurant_listing/Models/dishes_model.dart';
 import 'package:wiil_food_and_restaurant_listing/Models/restaurants_model.dart';
 import 'package:wiil_food_and_restaurant_listing/Pages/Customer_Screens/CartProcess/cart_page.dart';
 import 'package:wiil_food_and_restaurant_listing/Pages/Customer_Screens/Home_page/dish_details.dart';
 import 'package:wiil_food_and_restaurant_listing/Pages/User_Auth/User_pages/UserProfile.dart';
+import 'package:wiil_food_and_restaurant_listing/Pages/User_Auth/User_pages/setUserInfo.dart';
 
 import '../../../theme_data.dart';
 import 'home_widgets.dart';
@@ -36,6 +38,17 @@ class _HomePageState extends State<HomePage> {
   }
 
   TextEditingController addressControler = TextEditingController();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  void signOut() {
+    try {
+      _firebaseAuth.signOut();
+      googleSignIn.signOut();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   var locationText = "";
 
@@ -146,7 +159,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      _settingModalBottomSheet(context);
+                      //_settingModalBottomSheet(context);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => MapsPage()));
                     },
                     child: Container(
                       child: Row(
@@ -719,7 +734,7 @@ class _HomePageState extends State<HomePage> {
               height: 150,
               child: DrawerHeader(
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   alignment: Alignment.centerLeft,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -727,9 +742,23 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Row(
                         children: [
-                          CircleAvatar(
-                            child: Text("M D"),
-                            backgroundColor: MyColors.backColor,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SetUserInfo()));
+                            },
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  FirebaseAuth.instance.currentUser.photoURL),
+                              child:
+                                  FirebaseAuth.instance.currentUser.photoURL !=
+                                          null
+                                      ? null
+                                      : Text("M D"),
+                              backgroundColor: MyColors.backColor,
+                            ),
                           ),
                           SizedBox(width: 10),
                           Column(
@@ -737,17 +766,26 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "My Name David",
+                                FirebaseAuth.instance.currentUser.displayName !=
+                                        null
+                                    ? FirebaseAuth
+                                        .instance.currentUser.displayName
+                                        .toString()
+                                    : "My Name David",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 15,
                                     fontFamily: MyColors.primaryFont),
                               ),
                               Text(
-                                "myname@outlook.ac.ke",
+                                FirebaseAuth.instance.currentUser.email != null
+                                    ? FirebaseAuth.instance.currentUser.email
+                                        .toString()
+                                    : "myname@something.com",
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     fontFamily: MyColors.primaryFont),
                               )
                             ],
@@ -848,7 +886,9 @@ class _HomePageState extends State<HomePage> {
                     fontFamily: MyColors.primaryFont),
               ),
               leading: Icon(Icons.arrow_forward_ios_outlined),
-              onTap: () {},
+              onTap: () {
+                signOut();
+              },
             )
           ],
         ),
@@ -1564,31 +1604,8 @@ class _HomePageState extends State<HomePage> {
       builder: (BuildContext bc) {
         return SingleChildScrollView(
           child: Container(
-            child: Container(
-              padding: EdgeInsets.all(20),
-              height: 300,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10))),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: addressControler,
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.arrow_forward_ios),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      editLocation();
-                      //set location
-                    },
-                  )
-                ],
+              //child: GoogleMap(initialCameraPosition: CameraPosition(target: ),),
               ),
-            ),
-          ),
         );
       },
     );

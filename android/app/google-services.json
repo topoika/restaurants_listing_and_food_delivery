@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "79865365405-ofkq3t02l4d9pk42iagmhamr28q4s0et.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wiil_food_and_restaurant_listing",
+            "certificate_hash": "5f76c65279d07e6aae08ff2e583efdbbd9d7b5a7"
+          }
+        },
+        {
           "client_id": "79865365405-904u3n42g4kd40n20kr3e6a38beokhs8.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -1,6 +1,7 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:wiil_food_and_restaurant_listing/Pages/User_Auth/Authentication/widgets.dart';
 
 import '../../../theme_data.dart';
@@ -13,30 +14,21 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  // bool _success;
-  // String _userEmail;
-  // Future _register() async {
-  //   final User user = (await _firebaseAuth.createUserWithEmailAndPassword(
-  //     email: _emailController.text,
-  //     password: _passwordController.text,
-  //   ))
-  //       .user;
-  //   if (user != null) {
-  //     setState(() {
-  //       _success = true;
-  //       _userEmail = user.email;
-  //     });
-  //   } else {
-  //     setState(() {
-  //       _success = true;
-  //     });
-  //   }
-  // }
+  Future _register() async {
+    try {
+      UserCredential results = await _auth.createUserWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);
+      User user = results.user;
+
+      print(user);
+    } catch (e) {
+      print(e.toString);
+    }
+  }
 
   bool obse = true;
   Icon ic = Icon(Icons.visibility_off_outlined);
@@ -44,7 +36,6 @@ class _SignUpPageState extends State<SignUpPage> {
     Icons.visibility_rounded,
     color: Colors.green,
   );
-  //final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +53,6 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
       body: SingleChildScrollView(
-        //alignment: Alignment.center,
         padding: EdgeInsets.symmetric(
           horizontal: 30,
         ),
@@ -97,33 +87,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       color: Colors.white,
                     ),
                     child: TextFormField(
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                      cursorColor: Colors.black,
-                      style: TextStyle(
-                        fontFamily: MyColors.primaryFont,
-                        color: Colors.black,
-                        fontSize: 16,
-                      ),
-                      decoration: authTextInputDecoration("Full Name"),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 18,
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.white,
-                    ),
-                    child: TextFormField(
                         controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'Please enter some text';
@@ -137,31 +102,6 @@ class _SignUpPageState extends State<SignUpPage> {
                           fontSize: 16,
                         ),
                         decoration: authTextInputDecoration("Email")),
-                  ),
-                  SizedBox(
-                    height: 18,
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.white,
-                    ),
-                    child: TextFormField(
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
-                        cursorColor: Colors.black,
-                        style: TextStyle(
-                          fontFamily: MyColors.primaryFont,
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                        decoration: authTextInputDecoration("Username")),
                   ),
                   SizedBox(
                     height: 18,
@@ -208,101 +148,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 18,
-                  ),
                   Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.white,
-                    ),
-                    child: TextFormField(
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
-                        cursorColor: Colors.black,
-                        style: TextStyle(
-                          fontFamily: MyColors.primaryFont,
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                        decoration:
-                            authTextInputDecoration("Delivery Address")),
-                  ),
-                  SizedBox(
-                    height: 18,
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.white,
-                    ),
-                    child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
-                        cursorColor: Colors.black,
-                        style: TextStyle(
-                          fontFamily: MyColors.primaryFont,
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                        decoration: authTextInputDecoration("Phone Number")),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      children: [
-                        Checkbox(
-                          activeColor: MyColors.primaryColor,
-                          checkColor: Colors.white,
-                          value: timeDilation != 1.0,
-                          onChanged: (bool value) {
-                            setState(() {
-                              timeDilation = value ? 2.0 : 1.0;
-                            });
-                          },
-                        ),
-                        Text(
-                          'I agree with the ',
-                          style: TextStyle(
-                            fontFamily: MyColors.primaryFont,
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {},
-                          child: Text(
-                            'Terms & Contitions ',
-                            style: TextStyle(
-                              color: MyColors.primaryColor,
-                              fontFamily: MyColors.primaryFont,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          'of Wiil Food',
-                          style: TextStyle(
-                            fontFamily: MyColors.primaryFont,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
+                    margin: EdgeInsets.only(top: 60),
                     height: 40,
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(horizontal: 20),
@@ -314,11 +161,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: TextButton(
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            //_register();
+                            _register();
                           }
                         },
                         child: Text(
-                          'Continue',
+                          'Sign Up',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 15,
@@ -328,18 +175,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                   ),
-                  // Container(
-                  //   alignment: Alignment.center,
-                  //   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  //   child: Text(
-                  //     _success == null
-                  //         ? ''
-                  //         : (_success
-                  //             ? 'Successfully signed in ' + _userEmail
-                  //             : 'Sign in failed'),
-                  //     style: TextStyle(color: Colors.red),
-                  //   ),
-                  // )
                 ],
               ),
             )

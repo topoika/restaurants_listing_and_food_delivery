@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:wiil_food_and_restaurant_listing/Maps_Nav/mainPage.dart';
 
-import 'package:wiil_food_and_restaurant_listing/Pages/Customer_Screens/Home_page/homepage.dart';
 import 'package:wiil_food_and_restaurant_listing/Pages/User_Auth/Authentication/widgets.dart';
 
 import '../../../theme_data.dart';
@@ -18,10 +18,7 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  // bool _success;
-  // String _userEmail;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
   Future signInWithEmail() async {
     try {
       UserCredential result = await _firebaseAuth.signInWithEmailAndPassword(
@@ -31,31 +28,34 @@ class _SignInPageState extends State<SignInPage> {
       User user = result.user;
       print(user);
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
+          context, MaterialPageRoute(builder: (context) => MapsPage()));
     } catch (e) {
       print(e.toString);
       return Container();
     }
   }
 
-  Future<UserCredential> signInWithGoogle() async {
-    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-    final GoogleAuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  Future signInWithGoogle() async {
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
     );
-    // print("User signed  ${credential.rawNonce} In");
+    print(credential);
 
-    User user =
-        (await FirebaseAuth.instance.signInWithCredential(credential)) as User;
+    final UserCredential authResult =
+        await _firebaseAuth.signInWithCredential(credential);
+    final User user = authResult.user;
     if (user != null) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => MapsPage()));
     }
-
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    print(user);
   }
 
   final TextEditingController emailController = TextEditingController();
